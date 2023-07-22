@@ -73,14 +73,6 @@ async function run(){
                 playlist_id: firstPlaylistId
             }
         }),
-
-        prisma.song.create({
-            data: {
-                name: 'aaaa',
-                playlist_id: secondPlaylistId
-            }
-        }),
-
     ])
 }
 
