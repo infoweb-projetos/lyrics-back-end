@@ -121,4 +121,50 @@ export async function appRoutes(app: FastifyInstance) {
             }
         })
     })
+
+    app.post('/playlists/:id', async (request) => {
+        const togglePlaylistParams = z.object({
+            id: z.string().uuid(),
+        })
+        
+        const updatePlaylistBody = z.object({
+            name: z.string(),
+            description: z.string()
+        })
+
+        const { id } = togglePlaylistParams.parse(request.query)
+        const { name, description } = updatePlaylistBody.parse(request.body)
+
+        await prisma.playlist.update({
+            where: {
+                id: id
+            },
+            data: {
+                name: name,
+                description: description
+            }
+        })
+    })
+
+    app.post('/songs/:id', async (request) => {
+        const toggleSongParams = z.object({
+            id: z.string().uuid(),
+        })
+
+        const createSongBody = z.object({
+            name: z.string(),
+        })
+
+        const { id } = toggleSongParams.parse(request.query)
+        const { name } = createSongBody.parse(request.body)
+
+        await prisma.song.update({
+            where: {
+                id: id
+            },
+            data: {
+                name: name
+            }
+        })
+    })
 }
