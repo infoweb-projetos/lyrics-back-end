@@ -87,4 +87,38 @@ export async function appRoutes(app: FastifyInstance) {
             }
         })
     })
+
+    app.delete('/songs/:id', async (request) => {
+        const toggleSongParams = z.object({
+            id: z.string().uuid(),
+        })
+
+        const { id } = toggleSongParams.parse(request.query)
+
+        await prisma.song.delete({
+            where: {
+                id: id
+            }
+        })
+    })
+
+    app.delete('/playlists/:id', async (request) => {
+        const togglePlaylistParams = z.object({
+            id: z.string().uuid(),
+        })
+
+        const { id } = togglePlaylistParams.parse(request.query)
+        
+        await prisma.song.deleteMany({
+            where: {
+                playlist_id: id
+            }
+        })
+
+        await prisma.playlist.delete({
+            where: {
+                id: id
+            }
+        })
+    })
 }
