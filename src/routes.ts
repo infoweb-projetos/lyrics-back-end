@@ -7,7 +7,7 @@ export async function appRoutes(app: FastifyInstance) {
     app.get('/playlists', async () => {
         const playlists = await prisma.playlist.findMany()
         return playlists
-    }),
+    })
 
     app.get('/songs', async () => {
         const songs = await prisma.song.findMany()
@@ -40,7 +40,6 @@ export async function appRoutes(app: FastifyInstance) {
         }
     })
 
-
     app.get('/songs/:id', async (request) => {
 
         const toggleSongParams = z.object({
@@ -55,5 +54,37 @@ export async function appRoutes(app: FastifyInstance) {
             }
         })
         return song
+    })
+
+    app.post('/playlists', async (request) => {
+        const createPlaylistBody = z.object({
+            name: z.string(),
+            description: z.string()
+        })
+
+        const { name, description } = createPlaylistBody.parse(request.body)
+
+        await prisma.playlist.create({
+            data: {
+                name,
+                description
+            }
+        })
+    })
+
+    app.post('/songs', async (request) => {
+        const createPlaylistBody = z.object({
+            name: z.string(),
+            playlist_id: z.string().uuid()
+        })
+
+        const { name, playlist_id } = createPlaylistBody.parse(request.body)
+
+        await prisma.song.create({
+            data: {
+                name,
+                playlist_id
+            }
+        })
     })
 }
