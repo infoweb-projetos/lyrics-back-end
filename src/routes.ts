@@ -122,7 +122,7 @@ export async function appRoutes(app: FastifyInstance) {
         })
     })
 
-    app.post('/playlists/:id', async (request) => {
+    app.put('/playlists/:id', async (request) => {
         const togglePlaylistParams = z.object({
             id: z.string().uuid(),
         })
@@ -146,7 +146,7 @@ export async function appRoutes(app: FastifyInstance) {
         })
     })
 
-    app.post('/songs/:id', async (request) => {
+    app.put('/songs/:id', async (request) => {
         const toggleSongParams = z.object({
             id: z.string().uuid(),
         })
