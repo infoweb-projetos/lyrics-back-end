@@ -152,19 +152,31 @@ export async function appRoutes(app: FastifyInstance) {
         })
 
         const createSongBody = z.object({
-            name: z.string(),
+            name: z.string().optional(),
+            playlist_id: z.string().uuid().optional()
         })
 
         const { id } = toggleSongParams.parse(request.query)
-        const { name } = createSongBody.parse(request.body)
+        const { name, playlist_id } = createSongBody.parse(request.body)
 
-        await prisma.song.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: name
-            }
-        })
+        if (playlist_id) {
+            await prisma.song.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    playlist_id: playlist_id
+                }
+            })
+        } else {
+            await prisma.song.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: name
+                }
+            })
+        }
     })
 }
