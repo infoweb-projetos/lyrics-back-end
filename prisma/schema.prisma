@@ -23,9 +23,10 @@ model Playlist {
 model Song {
   id   String @id @default(uuid())
   name String
-  playlist_id String
+  lyric String?
+  playlist_id String?
 
-  playlist Playlist @relation(fields: [playlist_id], references: [id])
+  playlist Playlist? @relation(fields: [playlist_id], references: [id])
 
   @@map("songs")
 }
